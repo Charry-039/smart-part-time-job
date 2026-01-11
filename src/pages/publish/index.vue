@@ -1,5 +1,5 @@
 <template>
-  <view class="min-h-screen bg-bg-primary pb-[50px]">
+  <view class="min-h-screen bg-bg-primary" :style="{ paddingBottom: contentBottomSpace }">
     <view class="bg-white mx-[10px] mt-[10px] rounded-lg p-[15px]">
       <view class="mb-[14px]">
         <text class="block text-base font-bold text-[#333] mb-[6px]">
@@ -69,8 +69,8 @@
       </view>
     </view>
 
-    <view class="fixed bottom-[25px] left-0 right-0 px-[10px] py-[10px] bg-white z-[100] safe-area-bottom"
-      style="box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08);">
+    <view class="fixed left-0 right-0 px-[12px] py-[10px] bg-white z-[1200] safe-area-bottom"
+      :style="actionBarStyle" style="box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08);">
       <button
         class="w-full bg-gradient-to-br from-primary to-primary-light text-white text-center py-[14px] rounded-full text-lg font-bold active:opacity-90 active:translate-y-[1px]"
         style="box-shadow: 0 4px 12px rgba(91, 127, 255, 0.3); transition: all 0.3s ease;" @click="handlePublish">
@@ -84,6 +84,10 @@
 import { ref, computed } from 'vue'
 import { addJob, isLoggedIn, getUserInfo, generateId } from '@/utils/storage'
 import { JOB_CATEGORIES } from '@/utils/mock-data'
+
+const TABBAR_HEIGHT = 56
+const ACTION_BAR_GAP = 12
+const ACTION_BAR_HEIGHT = 78
 
 //兼职分类
 const categories = ref(JOB_CATEGORIES)
@@ -116,6 +120,9 @@ const selectedSalaryTypeLabel = computed(() => {
   const type = salaryTypes.value.find(t => t.value === form.value.salaryType)
   return type ? type.label : '元/小时'
 })
+
+const contentBottomSpace = computed(() => `${TABBAR_HEIGHT + ACTION_BAR_HEIGHT + 24}px`)
+const actionBarStyle = computed(() => `bottom: calc(env(safe-area-inset-bottom) + ${TABBAR_HEIGHT + ACTION_BAR_GAP}px)`)
 
 const onCategoryChange = (e: any) => {
   form.value.category = categories.value[e.detail.value].id

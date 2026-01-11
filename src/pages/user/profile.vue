@@ -66,7 +66,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { getUserInfo, logout, type UserInfo } from '@/utils/storage'
 
 const user = ref<UserInfo | null>(null)
@@ -117,13 +117,21 @@ const handleLogout = () => {
   })
 }
 
+// 刷新用户信息的方法
+const refreshUserInfo = () => {
+  user.value = getUserInfo()
+  console.log('用户信息已刷新')
+}
+
 onMounted(() => {
   user.value = getUserInfo()
+  // 监听全局刷新用户信息事件
+  uni.$on('refreshUserInfo', refreshUserInfo)
 })
 
-// 页面显示时刷新用户信息
-uni.$on('refreshUserInfo', () => {
-  user.value = getUserInfo()
+onUnmounted(() => {
+  // 移除事件监听，防止内存泄漏
+  uni.$off('refreshUserInfo', refreshUserInfo)
 })
 </script>
 

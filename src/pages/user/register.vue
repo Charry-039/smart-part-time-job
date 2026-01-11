@@ -89,6 +89,7 @@ const handleRegister = () => {
 
   setTimeout(() => {
     uni.switchTab({ url: '/pages/user/profile' })
+    uni.$emit('refreshUserInfo')
   }, 1500)
 }
 

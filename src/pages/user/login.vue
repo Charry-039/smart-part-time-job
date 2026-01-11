@@ -61,8 +61,6 @@ const handleLogin = () => {
   setUserInfo(user)
   uni.showToast({ title: '登录成功', icon: 'success' })
 
-  console.log('跳转到个人中心')
-
   setTimeout(() => {
     uni.switchTab({ url: '/pages/user/profile' })
   }, 1500)
