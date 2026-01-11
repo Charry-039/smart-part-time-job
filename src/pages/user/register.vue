@@ -98,5 +98,4 @@ const goToLogin = () => {
 </script>
 
 <style>
-/* 使用 Tailwind CSS */
 </style>
