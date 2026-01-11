@@ -52,9 +52,9 @@
     </view>
 
     <view class="submit-section">
-      <view class="submit-btn" @click="handlePublish">
-        <text>发布兼职</text>
-      </view>
+      <button @click="handlePublish">
+        发布兼职
+      </button>
     </view>
   </view>
 </template>
@@ -64,7 +64,9 @@ import { ref, computed } from 'vue'
 import { addJob, isLoggedIn, getUserInfo, generateId } from '@/utils/storage'
 import { JOB_CATEGORIES } from '@/utils/mock-data'
 
+//兼职分类
 const categories = ref(JOB_CATEGORIES)
+//薪资类型
 const salaryTypes = ref([
   { value: 'hour', label: '元/小时' },
   { value: 'day', label: '元/天' },
@@ -188,7 +190,7 @@ const handlePublish = () => {
 .publish-page {
   min-height: 100vh;
   background: #f5f7fa;
-  padding-bottom: 160rpx;
+  padding-bottom: 100rpx;
 }
 
 .form-section {
@@ -223,6 +225,11 @@ const handlePublish = () => {
   border-radius: 12rpx;
   font-size: 28rpx;
   box-sizing: border-box;
+}
+
+uni-input {
+  display: block;
+  width: 100%;
 }
 
 .textarea {
@@ -281,7 +288,7 @@ const handlePublish = () => {
 
 .submit-section {
   position: fixed;
-  bottom: 0;
+  bottom: 50rpx;
   left: 0;
   right: 0;
   padding: 20rpx 40rpx;
@@ -289,19 +296,25 @@ const handlePublish = () => {
   box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.08);
   padding-bottom: calc(20rpx + constant(safe-area-inset-bottom));
   padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
-}
+  z-index: 100;
 
-.submit-btn {
-  background: linear-gradient(135deg, #5B7FFF, #8CA4FF);
-  color: #fff;
-  text-align: center;
-  padding: 28rpx 0;
-  border-radius: 48rpx;
-  font-size: 32rpx;
-  font-weight: bold;
+  button {
+    background: linear-gradient(135deg, #5B7FFF, #8CA4FF);
+    color: #fff;
+    text-align: center;
+    padding: 28rpx 0;
+    border-radius: 48rpx;
+    font-size: 32rpx;
+    font-weight: bold;
+    box-shadow: 0 8rpx 24rpx rgba(91, 127, 255, 0.3);
+    transition: all 0.3s ease;
+    cursor: pointer;
 
-  &:active {
-    opacity: 0.9;
+    &:active {
+      opacity: 0.9;
+      transform: translateY(2rpx);
+      box-shadow: 0 4rpx 12rpx rgba(91, 127, 255, 0.25);
+    }
   }
 }
 </style>

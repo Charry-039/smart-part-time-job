@@ -35,7 +35,7 @@
     <!-- 推荐兼职列表 -->
     <view class="job-section">
       <view class="section-header">
-        <text class="section-title">🔥 热门兼职</text>
+        <text class="section-title">热门兼职</text>
         <text class="section-more" @click="goToList('')">更多 ></text>
       </view>
       <view class="job-list">
@@ -70,9 +70,9 @@ import { getJobs, type JobInfo } from '@/utils/storage'
 import { initMockData, JOB_CATEGORIES, getCategoryName } from '@/utils/mock-data'
 
 const banners = ref([
-  { text: '🎓 大学生专属兼职平台', bg: 'linear-gradient(135deg, #667eea, #764ba2)' },
-  { text: '💰 每日更新优质岗位', bg: 'linear-gradient(135deg, #f093fb, #f5576c)' },
-  { text: '🤖 AI智能匹配推荐', bg: 'linear-gradient(135deg, #4facfe, #00f2fe)' }
+  { text: '大学生专属兼职平台', bg: 'linear-gradient(135deg, #667eea, #764ba2)' },
+  { text: '每日更新优质岗位', bg: 'linear-gradient(135deg, #f093fb, #f5576c)' },
+  { text: 'AI智能匹配推荐', bg: 'linear-gradient(135deg, #4facfe, #00f2fe)' }
 ])
 
 const categories = ref(JOB_CATEGORIES)

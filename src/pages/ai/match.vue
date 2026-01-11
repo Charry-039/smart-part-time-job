@@ -15,11 +15,11 @@
       </view>
       <view class="form-item">
         <text class="label">⏰ 可用时间</text>
-        <input class="input" placeholder="例如：周末全天、工作日晚上、每周10小时" v-model="availableTime" />
+        <textarea class="textarea" placeholder="例如：周末全天、工作日晚上、每周10小时" v-model="availableTime" :maxlength="100" />
       </view>
       <view class="form-item">
         <text class="label">💰 期望薪资</text>
-        <input class="input" placeholder="例如：100元/小时、500元/天" v-model="expectedSalary" />
+        <textarea class="textarea" placeholder="例如：100元/小时、500元/天" v-model="expectedSalary" :maxlength="100" />
       </view>
 
       <view class="submit-btn" @click="handleSubmit" :class="{ loading: isLoading }">

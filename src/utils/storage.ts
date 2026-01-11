@@ -97,6 +97,7 @@ export function removeStorage(key: string): void {
 
 // 用户相关操作
 export function setUserInfo(user: UserInfo): void {
+  console.log('设置用户信息:', user)
   setStorage(STORAGE_KEYS.USER_INFO, user)
   setStorage(STORAGE_KEYS.IS_LOGGED_IN, true)
 }
