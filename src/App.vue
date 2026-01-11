@@ -15,8 +15,6 @@ onHide(() => {
 });
 </script>
 <style>
-@import '@/styles/tailwind.css';
-
 /* 全局样式 */
 page {
   background-color: #f5f7fa;
