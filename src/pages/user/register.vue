@@ -1,38 +1,46 @@
 <template>
-  <view class="register-page">
-    <view class="register-header">
-      <text class="title">创建账号</text>
-      <text class="sub-text">加入智创兼职，找到理想兼职</text>
+  <view class="min-h-screen bg-bg-primary">
+    <view class="bg-gradient-to-br from-primary to-primary-light px-[20px] py-[30px] text-white">
+      <text class="block text-[22px] font-bold mb-[6px]">创建账号</text>
+      <text class="text-sm opacity-90">加入智创兼职,找到理想兼职</text>
     </view>
 
-    <view class="register-form">
-      <view class="form-item">
-        <text class="label">手机号</text>
-        <input class="input" placeholder="请输入手机号" v-model="phone" type="number" />
+    <view class="bg-white mx-[15px] -mt-[10px] rounded-xl px-[20px] py-[20px]"
+      style="box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);">
+      <view class="mb-[16px]">
+        <text class="block text-sm text-[#333] mb-[6px]">手机号</text>
+        <input class="w-full px-[10px] py-[10px] bg-bg-primary rounded-md text-base box-border" placeholder="请输入手机号"
+          v-model="phone" type="number" />
       </view>
-      <view class="form-item">
-        <text class="label">学号（选填）</text>
-        <input class="input" placeholder="请输入学号" v-model="studentId" type="text" />
+      <view class="mb-[16px]">
+        <text class="block text-sm text-[#333] mb-[6px]">学号(选填)</text>
+        <input class="w-full px-[10px] py-[10px] bg-bg-primary rounded-md text-base box-border" placeholder="请输入学号"
+          v-model="studentId" type="text" />
       </view>
-      <view class="form-item">
-        <text class="label">昵称</text>
-        <input class="input" placeholder="请输入昵称" v-model="nickname" type="text" />
+      <view class="mb-[16px]">
+        <text class="block text-sm text-[#333] mb-[6px]">昵称</text>
+        <input class="w-full px-[10px] py-[10px] bg-bg-primary rounded-md text-base box-border" placeholder="请输入昵称"
+          v-model="nickname" type="text" />
       </view>
-      <view class="form-item">
-        <text class="label">密码</text>
-        <input class="input" placeholder="请输入密码（6-16位）" v-model="password" type="password" />
+      <view class="mb-[16px]">
+        <text class="block text-sm text-[#333] mb-[6px]">密码</text>
+        <input class="w-full px-[10px] py-[10px] bg-bg-primary rounded-md text-base box-border"
+          placeholder="请输入密码(6-16位)" v-model="password" type="password" />
       </view>
-      <view class="form-item">
-        <text class="label">确认密码</text>
-        <input class="input" placeholder="请再次输入密码" v-model="confirmPassword" type="password" />
+      <view class="mb-[16px]">
+        <text class="block text-sm text-[#333] mb-[6px]">确认密码</text>
+        <input class="w-full px-[10px] py-[10px] bg-bg-primary rounded-md text-base box-border" placeholder="请再次输入密码"
+          v-model="confirmPassword" type="password" />
       </view>
 
-      <view class="register-btn" @click="handleRegister">
+      <view
+        class="bg-gradient-to-br from-primary to-primary-light text-white text-center py-[14px] rounded-full text-lg font-bold mt-[20px] active:opacity-90"
+        @click="handleRegister">
         <text>注 册</text>
       </view>
 
-      <view class="register-footer">
-        <text class="link" @click="goToLogin">已有账号？去登录</text>
+      <view class="text-center mt-[16px]">
+        <text class="text-primary text-sm" @click="goToLogin">已有账号?去登录</text>
       </view>
     </view>
   </view>
@@ -89,80 +97,6 @@ const goToLogin = () => {
 }
 </script>
 
-<style lang="scss">
-.register-page {
-  min-height: 100vh;
-  background: #f5f7fa;
-}
-
-.register-header {
-  background: linear-gradient(135deg, #5B7FFF, #8CA4FF);
-  padding: 60rpx 40rpx;
-  color: #fff;
-}
-
-.title {
-  display: block;
-  font-size: 44rpx;
-  font-weight: bold;
-  margin-bottom: 12rpx;
-}
-
-.sub-text {
-  font-size: 26rpx;
-  opacity: 0.9;
-}
-
-.register-form {
-  background: #fff;
-  margin: -20rpx 30rpx 0;
-  border-radius: 24rpx;
-  padding: 40rpx;
-  box-shadow: 0 8rpx 40rpx rgba(0, 0, 0, 0.08);
-}
-
-.form-item {
-  margin-bottom: 32rpx;
-}
-
-.label {
-  display: block;
-  font-size: 26rpx;
-  color: #333;
-  margin-bottom: 12rpx;
-}
-
-.input {
-  width: 100%;
-  padding: 20rpx;
-  background: #f5f7fa;
-  border-radius: 12rpx;
-  font-size: 28rpx;
-  box-sizing: border-box;
-}
-
-.register-btn {
-  background: linear-gradient(135deg, #5B7FFF, #8CA4FF);
-  color: #fff;
-  text-align: center;
-  padding: 28rpx 0;
-  border-radius: 48rpx;
-  font-size: 32rpx;
-  font-weight: bold;
-  margin-top: 40rpx;
-
-  &:active {
-    opacity: 0.9;
-  }
-}
-
-.register-footer {
-  text-align: center;
-  margin-top: 32rpx;
-}
-
-.link {
-  color: #5B7FFF;
-  font-size: 26rpx;
-}
+<style>
+/* 使用 Tailwind CSS */
 </style>

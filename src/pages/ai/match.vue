@@ -1,60 +1,69 @@
 <template>
-  <view class="ai-page">
+  <view class="min-h-screen bg-bg-primary pb-[60px]">
     <!-- 头部介绍 -->
-    <view class="ai-header">
-      <text class="ai-icon">🤖</text>
-      <text class="ai-title">AI智能推荐</text>
-      <text class="ai-desc">告诉我你的技能和期望，为你匹配最合适的兼职</text>
+    <view class="bg-gradient-to-br from-[#667eea] to-[#764ba2] px-[20px] py-[30px] text-center text-white">
+      <text class="block text-[40px] mb-[10px]">🤖</text>
+      <text class="block text-[20px] font-bold mb-[8px]">AI智能推荐</text>
+      <text class="text-sm opacity-90">告诉我你的技能和期望,为你匹配最合适的兼职</text>
     </view>
 
     <!-- 输入表单 -->
-    <view class="form-section">
-      <view class="form-item">
-        <text class="label">🎯 你的技能特长</text>
-        <textarea class="textarea" placeholder="例如：编程、英语、设计、写作、沟通能力强..." v-model="skills" :maxlength="200" />
+    <view class="bg-white mx-[10px] mt-[10px] rounded-lg px-[15px] py-[15px]">
+      <view class="mb-[14px]">
+        <text class="block text-base font-bold text-[#333] mb-[6px]">🎯 你的技能特长</text>
+        <textarea class="w-full h-[80px] px-[10px] py-[10px] bg-bg-primary rounded-md text-base box-border"
+          placeholder="例如:编程、英语、设计、写作、沟通能力强..." v-model="skills" :maxlength="200" />
       </view>
-      <view class="form-item">
-        <text class="label">⏰ 可用时间</text>
-        <textarea class="textarea" placeholder="例如：周末全天、工作日晚上、每周10小时" v-model="availableTime" :maxlength="100" />
+      <view class="mb-[14px]">
+        <text class="block text-base font-bold text-[#333] mb-[6px]">⏰ 可用时间</text>
+        <textarea class="w-full h-[80px] px-[10px] py-[10px] bg-bg-primary rounded-md text-base box-border"
+          placeholder="例如:周末全天、工作日晚上、每周10小时" v-model="availableTime" :maxlength="100" />
       </view>
-      <view class="form-item">
-        <text class="label">💰 期望薪资</text>
-        <textarea class="textarea" placeholder="例如：100元/小时、500元/天" v-model="expectedSalary" :maxlength="100" />
+      <view class="mb-[14px]">
+        <text class="block text-base font-bold text-[#333] mb-[6px]">💰 期望薪资</text>
+        <textarea class="w-full h-[80px] px-[10px] py-[10px] bg-bg-primary rounded-md text-base box-border"
+          placeholder="例如:100元/小时、500元/天" v-model="expectedSalary" :maxlength="100" />
       </view>
 
-      <view class="submit-btn" @click="handleSubmit" :class="{ loading: isLoading }">
+      <view
+        class="bg-gradient-to-br from-[#667eea] to-[#764ba2] text-white text-center py-[14px] rounded-full text-lg font-bold mt-[10px] active:opacity-90"
+        :class="{ 'opacity-70': isLoading }" @click="handleSubmit">
         <text v-if="!isLoading">✨ 获取AI推荐</text>
         <text v-else>🔄 分析中...</text>
       </view>
     </view>
 
     <!-- AI推荐结果 -->
-    <view class="result-section" v-if="showResult">
-      <view class="result-header">
-        <text class="result-title">🎉 AI推荐结果</text>
+    <view class="bg-white mx-[10px] mt-[10px] rounded-lg px-[15px] py-[15px]" v-if="showResult">
+      <view class="mb-[10px]">
+        <text class="text-lg font-bold text-[#333]">🎉 AI推荐结果</text>
       </view>
-      <view class="result-content">
-        <text class="result-text">{{ aiResult }}</text>
+      <view
+        class="bg-gradient-to-br from-[rgba(102,126,234,0.1)] to-[rgba(118,75,162,0.1)] px-md py-md rounded-md mb-md">
+        <text class="text-base text-[#333] leading-relaxed whitespace-pre-wrap">{{ aiResult }}</text>
       </view>
-      <view class="result-actions">
-        <view class="action-btn" @click="goToList">
+      <view class="flex gap-[10px]">
+        <view
+          class="flex-1 text-center py-[10px] bg-gradient-to-br from-[#667eea] to-[#764ba2] text-white rounded-full text-base"
+          @click="goToList">
           <text>查看推荐岗位</text>
         </view>
-        <view class="action-btn secondary" @click="handleReset">
+        <view class="flex-1 text-center py-[10px] bg-bg-primary text-text-secondary rounded-full text-base"
+          @click="handleReset">
           <text>重新推荐</text>
         </view>
       </view>
     </view>
 
-    <!-- AI生成图片展示（模拟） -->
-    <view class="image-section" v-if="showResult">
-      <text class="section-title">🎨 AI场景配图</text>
-      <view class="image-grid">
-        <view class="image-item" v-for="(img, i) in sceneImages" :key="i">
-          <view class="image-placeholder" :style="{ background: img.bg }">
-            <text class="image-icon">{{ img.icon }}</text>
+    <!-- AI生成图片展示(模拟) -->
+    <view class="bg-white mx-[10px] mt-[10px] rounded-lg px-[15px] py-[15px]" v-if="showResult">
+      <text class="block text-[15px] font-bold text-[#333] mb-md">🎨 AI场景配图</text>
+      <view class="grid grid-cols-3 gap-[10px]">
+        <view class="text-center" v-for="(img, i) in sceneImages" :key="i">
+          <view class="h-[80px] rounded-md flex items-center justify-center mb-[6px]" :style="{ background: img.bg }">
+            <text class="text-[30px]">{{ img.icon }}</text>
           </view>
-          <text class="image-label">{{ img.label }}</text>
+          <text class="text-xs text-text-secondary">{{ img.label }}</text>
         </view>
       </view>
     </view>
@@ -109,186 +118,6 @@ const goToList = () => {
 }
 </script>
 
-<style lang="scss">
-.ai-page {
-  min-height: 100vh;
-  background: #f5f7fa;
-  padding-bottom: 120rpx;
-}
-
-.ai-header {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  padding: 60rpx 40rpx;
-  text-align: center;
-  color: #fff;
-}
-
-.ai-icon {
-  font-size: 80rpx;
-  display: block;
-  margin-bottom: 20rpx;
-}
-
-.ai-title {
-  font-size: 40rpx;
-  font-weight: bold;
-  display: block;
-  margin-bottom: 16rpx;
-}
-
-.ai-desc {
-  font-size: 26rpx;
-  opacity: 0.9;
-}
-
-.form-section {
-  background: #fff;
-  margin: 20rpx;
-  border-radius: 20rpx;
-  padding: 30rpx;
-}
-
-.form-item {
-  margin-bottom: 28rpx;
-}
-
-.label {
-  display: block;
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 12rpx;
-}
-
-.input {
-  width: 100%;
-  padding: 20rpx;
-  background: #f5f7fa;
-  border-radius: 12rpx;
-  font-size: 28rpx;
-  box-sizing: border-box;
-}
-
-.textarea {
-  width: 100%;
-  height: 160rpx;
-  padding: 20rpx;
-  background: #f5f7fa;
-  border-radius: 12rpx;
-  font-size: 28rpx;
-  box-sizing: border-box;
-}
-
-.submit-btn {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: #fff;
-  text-align: center;
-  padding: 28rpx 0;
-  border-radius: 48rpx;
-  font-size: 32rpx;
-  font-weight: bold;
-  margin-top: 20rpx;
-
-  &:active {
-    opacity: 0.9;
-  }
-
-  &.loading {
-    opacity: 0.7;
-  }
-}
-
-.result-section {
-  background: #fff;
-  margin: 20rpx;
-  border-radius: 20rpx;
-  padding: 30rpx;
-}
-
-.result-header {
-  margin-bottom: 20rpx;
-}
-
-.result-title {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-}
-
-.result-content {
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-  padding: 24rpx;
-  border-radius: 16rpx;
-  margin-bottom: 24rpx;
-}
-
-.result-text {
-  font-size: 28rpx;
-  color: #333;
-  line-height: 1.8;
-  white-space: pre-wrap;
-}
-
-.result-actions {
-  display: flex;
-  gap: 20rpx;
-}
-
-.action-btn {
-  flex: 1;
-  text-align: center;
-  padding: 20rpx 0;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: #fff;
-  border-radius: 40rpx;
-  font-size: 28rpx;
-
-  &.secondary {
-    background: #f5f7fa;
-    color: #666;
-  }
-}
-
-.image-section {
-  background: #fff;
-  margin: 20rpx;
-  border-radius: 20rpx;
-  padding: 30rpx;
-}
-
-.section-title {
-  font-size: 30rpx;
-  font-weight: bold;
-  color: #333;
-  display: block;
-  margin-bottom: 24rpx;
-}
-
-.image-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20rpx;
-}
-
-.image-item {
-  text-align: center;
-}
-
-.image-placeholder {
-  height: 160rpx;
-  border-radius: 16rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 12rpx;
-}
-
-.image-icon {
-  font-size: 60rpx;
-}
-
-.image-label {
-  font-size: 24rpx;
-  color: #666;
-}
+<style>
+/* 使用 Tailwind CSS */
 </style>

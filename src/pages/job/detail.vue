@@ -1,66 +1,76 @@
 <template>
-  <view class="job-detail-page" v-if="job">
+  <view class="min-h-screen bg-bg-primary pb-[70px]" v-if="job">
     <!-- 基本信息 -->
-    <view class="job-header">
-      <text class="job-title">{{ job.title }}</text>
-      <view class="salary-info">
-        <text class="salary-num">¥{{ job.salary }}</text>
-        <text class="salary-type">{{ getSalaryTypeText(job.salaryType) }}</text>
+    <view class="bg-gradient-to-br from-primary to-primary-light px-[15px] py-[20px] text-white">
+      <text class="block text-xl font-bold mb-[10px]">{{ job.title }}</text>
+      <view class="flex items-baseline gap-[4px]">
+        <text class="text-[24px] font-bold">¥{{ job.salary }}</text>
+        <text class="text-sm opacity-90">{{ getSalaryTypeText(job.salaryType) }}</text>
       </view>
     </view>
 
     <!-- 标签 -->
-    <view class="tags-section">
-      <text class="tag">{{ getCategoryName(job.category) }}</text>
-      <text class="tag location">📍 {{ job.location }}</text>
+    <view class="flex flex-wrap gap-[8px] px-[15px] py-md bg-white">
+      <text class="px-[10px] py-[4px] bg-primary/10 text-primary rounded-[10px] text-xs">{{
+        getCategoryName(job.category) }}</text>
+      <text class="px-[10px] py-[4px] bg-success/10 text-success rounded-[10px] text-xs">📍 {{ job.location }}</text>
     </view>
 
     <!-- 发布信息 -->
-    <view class="publisher-section">
-      <view class="publisher-info">
-        <view class="avatar">{{ job.publisherName?.charAt(0) || '?' }}</view>
-        <view class="publisher-text">
-          <text class="publisher-name">{{ job.publisherName }}</text>
-          <text class="publish-time">{{ formatTime(job.createTime) }}</text>
+    <view class="flex justify-between items-center px-[15px] py-md bg-white mt-[1px]">
+      <view class="flex items-center gap-[8px]">
+        <view
+          class="w-[40px] h-[40px] rounded-full bg-gradient-to-br from-primary to-primary-light text-white flex items-center justify-center text-lg font-bold">
+          {{ job.publisherName?.charAt(0) || '?' }}</view>
+        <view class="flex flex-col">
+          <text class="text-base text-text-primary font-medium">{{ job.publisherName }}</text>
+          <text class="text-xs text-text-light">{{ formatTime(job.createTime) }}</text>
         </view>
       </view>
-      <view class="stats">
-        <text class="stat-item">👁 {{ job.views }}浏览</text>
-        <text class="stat-item">👤 {{ job.applicants }}人报名</text>
+      <view class="flex gap-[10px]">
+        <text class="text-xs text-text-secondary">👁 {{ job.views }}浏览</text>
+        <text class="text-xs text-text-secondary">👤 {{ job.applicants }}人报名</text>
       </view>
     </view>
 
     <!-- 职位描述 -->
-    <view class="section">
-      <text class="section-title">📝 职位描述</text>
-      <text class="section-content">{{ job.description }}</text>
+    <view class="bg-white mt-[10px] px-[15px] py-md">
+      <text class="block text-[15px] font-bold text-text-primary mb-[8px]">📝 职位描述</text>
+      <text class="text-base text-text-secondary leading-relaxed">{{ job.description }}</text>
     </view>
 
     <!-- 任职要求 -->
-    <view class="section">
-      <text class="section-title">✅ 任职要求</text>
-      <view class="requirements">
-        <text class="req-item" v-for="(req, i) in job.requirements" :key="i">• {{ req }}</text>
+    <view class="bg-white mt-[10px] px-[15px] py-md">
+      <text class="block text-[15px] font-bold text-text-primary mb-[8px]">✅ 任职要求</text>
+      <view class="flex flex-col gap-[6px]">
+        <text class="text-base text-text-secondary" v-for="(req, i) in job.requirements" :key="i">• {{ req }}</text>
       </view>
     </view>
 
     <!-- 联系方式 -->
-    <view class="section">
-      <text class="section-title">📞 联系方式</text>
-      <text class="section-content">{{ job.contact }}</text>
+    <view class="bg-white mt-[10px] px-[15px] py-md">
+      <text class="block text-[15px] font-bold text-text-primary mb-[8px]">📞 联系方式</text>
+      <text class="text-base text-text-secondary">{{ job.contact }}</text>
     </view>
 
     <!-- 底部按钮 -->
-    <view class="bottom-bar">
-      <view class="action-btn favor-btn" :class="{ active: isFavorited }" @click="toggleFavorite">
+    <view class="fixed bottom-0 left-0 right-0 flex gap-[8px] px-[15px] py-[10px] bg-white safe-area-bottom"
+      style="box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08);">
+      <view
+        class="flex flex-col items-center justify-center px-md py-sm rounded-md bg-bg-primary text-text-secondary text-xs min-w-[50px]"
+        :class="{ '!text-secondary': isFavorited }" @click="toggleFavorite">
         <text>{{ isFavorited ? '❤️' : '🤍' }}</text>
         <text>{{ isFavorited ? '已收藏' : '收藏' }}</text>
       </view>
-      <view class="action-btn message-btn" @click="goToMessage">
+      <view
+        class="flex flex-col items-center justify-center px-md py-sm rounded-md bg-bg-primary text-text-secondary text-xs min-w-[50px]"
+        @click="goToMessage">
         <text>💬</text>
         <text>留言</text>
       </view>
-      <view class="action-btn apply-btn" :class="{ applied: hasApplied }" @click="handleApply">
+      <view
+        class="flex-1 flex items-center justify-center py-sm rounded-md bg-gradient-to-br from-primary to-primary-light text-white text-[15px] font-bold"
+        :class="{ '!bg-[#ccc]': hasApplied }" @click="handleApply">
         <text>{{ hasApplied ? '已报名' : '立即报名' }}</text>
       </view>
     </view>
@@ -173,193 +183,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss">
-.job-detail-page {
-  min-height: 100vh;
-  background: #f5f7fa;
-  padding-bottom: 140rpx;
-}
-
-.job-header {
-  background: linear-gradient(135deg, #5B7FFF, #8CA4FF);
-  padding: 40rpx 30rpx;
-  color: #fff;
-}
-
-.job-title {
-  font-size: 36rpx;
-  font-weight: bold;
-  display: block;
-  margin-bottom: 20rpx;
-}
-
-.salary-info {
-  display: flex;
-  align-items: baseline;
-  gap: 8rpx;
-}
-
-.salary-num {
-  font-size: 48rpx;
-  font-weight: bold;
-}
-
-.salary-type {
-  font-size: 26rpx;
-  opacity: 0.9;
-}
-
-.tags-section {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16rpx;
-  padding: 24rpx 30rpx;
-  background: #fff;
-}
-
-.tag {
-  padding: 8rpx 20rpx;
-  background: rgba(91, 127, 255, 0.1);
-  color: #5B7FFF;
-  border-radius: 20rpx;
-  font-size: 24rpx;
-
-  &.location {
-    background: rgba(82, 196, 26, 0.1);
-    color: #52C41A;
-  }
-}
-
-.publisher-section {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24rpx 30rpx;
-  background: #fff;
-  margin-top: 2rpx;
-}
-
-.publisher-info {
-  display: flex;
-  align-items: center;
-  gap: 16rpx;
-}
-
-.avatar {
-  width: 80rpx;
-  height: 80rpx;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #5B7FFF, #8CA4FF);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 32rpx;
-  font-weight: bold;
-}
-
-.publisher-text {
-  display: flex;
-  flex-direction: column;
-}
-
-.publisher-name {
-  font-size: 28rpx;
-  color: #1a1a2e;
-  font-weight: 500;
-}
-
-.publish-time {
-  font-size: 24rpx;
-  color: #999;
-}
-
-.stats {
-  display: flex;
-  gap: 20rpx;
-}
-
-.stat-item {
-  font-size: 24rpx;
-  color: #666;
-}
-
-.section {
-  background: #fff;
-  margin-top: 20rpx;
-  padding: 24rpx 30rpx;
-}
-
-.section-title {
-  font-size: 30rpx;
-  font-weight: bold;
-  color: #1a1a2e;
-  display: block;
-  margin-bottom: 16rpx;
-}
-
-.section-content {
-  font-size: 28rpx;
-  color: #666;
-  line-height: 1.6;
-}
-
-.requirements {
-  display: flex;
-  flex-direction: column;
-  gap: 12rpx;
-}
-
-.req-item {
-  font-size: 28rpx;
-  color: #666;
-}
-
-.bottom-bar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  gap: 16rpx;
-  padding: 20rpx 30rpx;
-  background: #fff;
-  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.08);
-  padding-bottom: calc(20rpx + constant(safe-area-inset-bottom));
-  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
-}
-
-.action-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 16rpx 24rpx;
-  border-radius: 16rpx;
-  font-size: 24rpx;
-
-  &.favor-btn,
-  &.message-btn {
-    background: #f5f7fa;
-    color: #666;
-    min-width: 100rpx;
-
-    &.active {
-      color: #FF6B6B;
-    }
-  }
-
-  &.apply-btn {
-    flex: 1;
-    flex-direction: row;
-    background: linear-gradient(135deg, #5B7FFF, #8CA4FF);
-    color: #fff;
-    font-size: 30rpx;
-    font-weight: bold;
-
-    &.applied {
-      background: #ccc;
-    }
-  }
-}
+<style>
+/* 使用 Tailwind CSS */
 </style>

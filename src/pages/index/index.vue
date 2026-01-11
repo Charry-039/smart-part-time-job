@@ -1,65 +1,70 @@
 <template>
-  <view class="home-page">
+  <view class="min-h-screen bg-bg-primary pb-[60px]">
     <!-- 自定义导航栏 -->
-    <view class="nav-header">
-      <view class="nav-title">智创兼职</view>
-      <view class="nav-search" @click="goToSearch">
-        <text class="search-icon">🔍</text>
-        <text class="search-text">搜索兼职岗位...</text>
+    <view class="bg-gradient-to-br from-primary to-primary-light px-[15px] pt-[30px] pb-[15px] sticky top-0 z-[100]">
+      <view class="text-white text-xl font-bold mb-[10px]">智创兼职</view>
+      <view class="flex items-center bg-white/90 rounded-full px-md py-sm" @click="goToSearch">
+        <text class="mr-[6px]">🔍</text>
+        <text class="text-text-light text-base">搜索兼职岗位...</text>
       </view>
     </view>
 
     <!-- 轮播图 -->
-    <swiper class="banner" indicator-dots autoplay circular>
+    <swiper class="h-[140px] mx-[10px] my-[10px] rounded-lg overflow-hidden" indicator-dots autoplay circular>
       <swiper-item v-for="(item, index) in banners" :key="index">
-        <view class="banner-item" :style="{ background: item.bg }">
-          <text class="banner-text">{{ item.text }}</text>
+        <view class="h-full flex items-center justify-center rounded-lg" :style="{ background: item.bg }">
+          <text class="text-white text-xl font-bold" style="text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);">{{ item.text
+            }}</text>
         </view>
       </swiper-item>
     </swiper>
 
     <!-- 分类入口 -->
-    <view class="category-section">
-      <view class="section-header">
-        <text class="section-title">兼职分类</text>
-        <text class="section-more" @click="goToList('')">全部 ></text>
+    <view class="bg-white mx-[10px] rounded-lg p-md">
+      <view class="flex justify-between items-center mb-md">
+        <text class="text-lg font-bold text-text-primary">兼职分类</text>
+        <text class="text-sm text-primary" @click="goToList('')">全部 ></text>
       </view>
-      <view class="category-grid">
-        <view class="category-item" v-for="cat in categories" :key="cat.id" @click="goToList(cat.id)">
-          <view class="cat-icon">{{ cat.icon }}</view>
-          <text class="cat-name">{{ cat.name }}</text>
+      <view class="grid grid-cols-4 gap-[10px]">
+        <view class="flex flex-col items-center p-sm rounded-md bg-[#f8f9fc] active:bg-[#eef1f8]"
+          v-for="cat in categories" :key="cat.id" @click="goToList(cat.id)">
+          <view class="text-[24px] mb-[4px]">{{ cat.icon }}</view>
+          <text class="text-xs text-[#333]">{{ cat.name }}</text>
         </view>
       </view>
     </view>
 
     <!-- 推荐兼职列表 -->
-    <view class="job-section">
-      <view class="section-header">
-        <text class="section-title">热门兼职</text>
-        <text class="section-more" @click="goToList('')">更多 ></text>
+    <view class="bg-white mx-[10px] mt-[10px] rounded-lg p-md">
+      <view class="flex justify-between items-center mb-md">
+        <text class="text-lg font-bold text-text-primary">热门兼职</text>
+        <text class="text-sm text-primary" @click="goToList('')">更多 ></text>
       </view>
-      <view class="job-list">
-        <view class="job-card" v-for="job in hotJobs" :key="job.id" @click="goToDetail(job.id)">
-          <view class="job-info">
-            <text class="job-title">{{ job.title }}</text>
-            <view class="job-tags">
-              <text class="tag">{{ getCategoryName(job.category) }}</text>
-              <text class="tag location">📍 {{ job.location }}</text>
+      <view class="flex flex-col gap-[10px]">
+        <view class="flex justify-between p-md bg-[#f8f9fc] rounded-md active:bg-[#eef1f8]" v-for="job in hotJobs"
+          :key="job.id" @click="goToDetail(job.id)">
+          <view class="flex-1 mr-[10px]">
+            <text class="block text-[15px] font-bold text-text-primary mb-[6px]">{{ job.title }}</text>
+            <view class="flex flex-wrap gap-[5px] mb-[6px]">
+              <text class="inline-block text-[11px] px-[6px] py-[2px] bg-primary/10 text-primary rounded-[3px]">{{
+                getCategoryName(job.category) }}</text>
+              <text class="inline-block text-[11px] px-[6px] py-[2px] bg-success/10 text-success rounded-[3px]">📍 {{
+                job.location }}</text>
             </view>
-            <text class="job-desc">{{ job.description }}</text>
+            <text class="text-sm text-text-secondary line-clamp-2">{{ job.description }}</text>
           </view>
-          <view class="job-salary">
-            <text class="salary-num">¥{{ job.salary }}</text>
-            <text class="salary-type">{{ getSalaryTypeText(job.salaryType) }}</text>
+          <view class="flex flex-col items-end justify-center min-w-[60px]">
+            <text class="text-xl font-bold text-secondary">¥{{ job.salary }}</text>
+            <text class="text-[11px] text-text-light">{{ getSalaryTypeText(job.salaryType) }}</text>
           </view>
         </view>
       </view>
     </view>
 
     <!-- 空状态 -->
-    <view class="empty-state" v-if="hotJobs.length === 0">
-      <text class="empty-icon">📭</text>
-      <text class="empty-text">暂无兼职信息</text>
+    <view class="flex flex-col items-center py-[50px]" v-if="hotJobs.length === 0">
+      <text class="text-[40px] mb-[10px]">📭</text>
+      <text class="text-text-light text-base">暂无兼职信息</text>
     </view>
   </view>
 </template>
@@ -108,216 +113,12 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss">
-.home-page {
-  min-height: 100vh;
-  background: #f5f7fa;
-  padding-bottom: 120rpx;
-}
-
-.nav-header {
-  background: linear-gradient(135deg, #5B7FFF, #8CA4FF);
-  padding: 60rpx 30rpx 30rpx;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-.nav-title {
-  color: #fff;
-  font-size: 36rpx;
-  font-weight: bold;
-  margin-bottom: 20rpx;
-}
-
-.nav-search {
-  display: flex;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 40rpx;
-  padding: 16rpx 24rpx;
-
-  .search-icon {
-    margin-right: 12rpx;
-  }
-
-  .search-text {
-    color: #999;
-    font-size: 28rpx;
-  }
-}
-
-.banner {
-  height: 280rpx;
-  margin: 20rpx;
-  border-radius: 20rpx;
-  overflow: hidden;
-}
-
-.banner-item {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 20rpx;
-}
-
-.banner-text {
-  color: #fff;
-  font-size: 36rpx;
-  font-weight: bold;
-  text-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.2);
-}
-
-.category-section,
-.job-section {
-  background: #fff;
-  margin: 20rpx;
-  border-radius: 20rpx;
-  padding: 24rpx;
-}
-
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24rpx;
-}
-
-.section-title {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #1a1a2e;
-}
-
-.section-more {
-  font-size: 26rpx;
-  color: #5B7FFF;
-}
-
-.category-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20rpx;
-}
-
-.category-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 16rpx;
-  border-radius: 16rpx;
-  background: #f8f9fc;
-
-  &:active {
-    background: #eef1f8;
-  }
-}
-
-.cat-icon {
-  font-size: 48rpx;
-  margin-bottom: 8rpx;
-}
-
-.cat-name {
-  font-size: 24rpx;
-  color: #333;
-}
-
-.job-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20rpx;
-}
-
-.job-card {
-  display: flex;
-  justify-content: space-between;
-  padding: 24rpx;
-  background: #f8f9fc;
-  border-radius: 16rpx;
-
-  &:active {
-    background: #eef1f8;
-  }
-}
-
-.job-info {
-  flex: 1;
-  margin-right: 20rpx;
-}
-
-.job-title {
-  font-size: 30rpx;
-  font-weight: bold;
-  color: #1a1a2e;
-  display: block;
-  margin-bottom: 12rpx;
-}
-
-.job-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10rpx;
-  margin-bottom: 12rpx;
-}
-
-.tag {
-  display: inline-block;
-  font-size: 22rpx;
-  padding: 4rpx 12rpx;
-  background: rgba(91, 127, 255, 0.1);
-  color: #5B7FFF;
-  border-radius: 6rpx;
-
-  &.location {
-    background: rgba(82, 196, 26, 0.1);
-    color: #52C41A;
-  }
-}
-
-.job-desc {
-  font-size: 26rpx;
-  color: #666;
+<style>
+/* 使用 Tailwind CSS,无需额外样式 */
+.line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-}
-
-.job-salary {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: center;
-  min-width: 120rpx;
-}
-
-.salary-num {
-  font-size: 36rpx;
-  font-weight: bold;
-  color: #FF6B6B;
-}
-
-.salary-type {
-  font-size: 22rpx;
-  color: #999;
-}
-
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 100rpx 0;
-}
-
-.empty-icon {
-  font-size: 80rpx;
-  margin-bottom: 20rpx;
-}
-
-.empty-text {
-  color: #999;
-  font-size: 28rpx;
 }
 </style>

@@ -1,24 +1,28 @@
 <template>
-  <view class="favorites-page">
-    <view class="job-list" v-if="favoriteJobs.length > 0">
-      <view class="job-card" v-for="job in favoriteJobs" :key="job.id" @click="goToDetail(job.id)">
-        <view class="job-info">
-          <text class="job-title">{{ job.title }}</text>
-          <text class="job-location">📍 {{ job.location }}</text>
+  <view class="min-h-screen bg-bg-primary px-[10px] py-[10px]">
+    <view class="flex flex-col gap-[10px]" v-if="favoriteJobs.length > 0">
+      <view class="flex justify-between items-center bg-white px-[14px] py-[14px] rounded-md active:bg-[#f9f9f9]"
+        v-for="job in favoriteJobs" :key="job.id" @click="goToDetail(job.id)">
+        <view class="flex-1">
+          <text class="block text-[15px] font-bold text-text-primary mb-[4px]">{{ job.title }}</text>
+          <text class="text-xs text-text-light">📍 {{ job.location }}</text>
         </view>
-        <view class="job-right">
-          <text class="job-salary">¥{{ job.salary }}</text>
-          <view class="remove-btn" @click.stop="handleRemove(job.id)">
+        <view class="flex flex-col items-end gap-[6px]">
+          <text class="text-lg font-bold text-secondary">¥{{ job.salary }}</text>
+          <view class="px-[10px] py-[4px] bg-[#f5f5f5] rounded-[10px] text-[11px] text-text-light"
+            @click.stop="handleRemove(job.id)">
             <text>移除</text>
           </view>
         </view>
       </view>
     </view>
 
-    <view class="empty-state" v-else>
-      <text class="empty-icon">💔</text>
-      <text class="empty-text">暂无收藏的兼职</text>
-      <view class="empty-btn" @click="goToHome">
+    <view class="flex flex-col items-center py-[75px]" v-else>
+      <text class="text-[50px] mb-md">💔</text>
+      <text class="text-[15px] text-text-light mb-[20px]">暂无收藏的兼职</text>
+      <view
+        class="px-[24px] py-[10px] bg-gradient-to-br from-primary to-primary-light text-white rounded-full text-base"
+        @click="goToHome">
         <text>去发现兼职</text>
       </view>
     </view>
@@ -45,7 +49,7 @@ const goToDetail = (jobId: string) => {
 const handleRemove = (jobId: string) => {
   uni.showModal({
     title: '提示',
-    content: '确定要移除这个收藏吗？',
+    content: '确定要移除这个收藏吗?',
     success: (res) => {
       if (res.confirm) {
         removeFavorite(jobId)
@@ -65,93 +69,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss">
-.favorites-page {
-  min-height: 100vh;
-  background: #f5f7fa;
-  padding: 20rpx;
-}
-
-.job-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20rpx;
-}
-
-.job-card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #fff;
-  padding: 28rpx;
-  border-radius: 16rpx;
-
-  &:active {
-    background: #f9f9f9;
-  }
-}
-
-.job-info {
-  flex: 1;
-}
-
-.job-title {
-  display: block;
-  font-size: 30rpx;
-  font-weight: bold;
-  color: #1a1a2e;
-  margin-bottom: 8rpx;
-}
-
-.job-location {
-  font-size: 24rpx;
-  color: #999;
-}
-
-.job-right {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 12rpx;
-}
-
-.job-salary {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #FF6B6B;
-}
-
-.remove-btn {
-  padding: 8rpx 20rpx;
-  background: #f5f5f5;
-  border-radius: 20rpx;
-  font-size: 22rpx;
-  color: #999;
-}
-
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 150rpx 0;
-}
-
-.empty-icon {
-  font-size: 100rpx;
-  margin-bottom: 24rpx;
-}
-
-.empty-text {
-  font-size: 30rpx;
-  color: #999;
-  margin-bottom: 40rpx;
-}
-
-.empty-btn {
-  padding: 20rpx 48rpx;
-  background: linear-gradient(135deg, #5B7FFF, #8CA4FF);
-  color: #fff;
-  border-radius: 40rpx;
-  font-size: 28rpx;
-}
+<style>
+/* 使用 Tailwind CSS */
 </style>

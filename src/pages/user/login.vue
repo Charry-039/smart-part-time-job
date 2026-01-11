@@ -1,26 +1,30 @@
 <template>
-  <view class="login-page">
-    <view class="login-header">
-      <text class="logo-text">智创兼职</text>
-      <text class="sub-text">大学生专属兼职平台</text>
+  <view class="min-h-screen" style="background: linear-gradient(180deg, #5B7FFF 0%, #8CA4FF 50%, #f5f7fa 50%);">
+    <view class="pt-[60px] pb-[40px] text-center">
+      <text class="block text-[28px] font-bold text-white mb-[8px]">智创兼职</text>
+      <text class="text-base text-white/90">大学生专属兼职平台</text>
     </view>
 
-    <view class="login-form">
-      <view class="form-item">
-        <text class="label">手机号/学号</text>
-        <input class="input" placeholder="请输入手机号或学号" v-model="account" type="text" />
+    <view class="bg-white mx-[20px] rounded-xl px-[24px] py-[24px]" style="box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);">
+      <view class="mb-[18px]">
+        <text class="block text-base text-[#333] mb-[8px]">手机号/学号</text>
+        <input class="w-full px-md py-md bg-bg-primary rounded-md text-base box-border" placeholder="请输入手机号或学号"
+          v-model="account" type="text" />
       </view>
-      <view class="form-item">
-        <text class="label">密码</text>
-        <input class="input" placeholder="请输入密码" v-model="password" type="password" />
-      </view>
-
-      <view class="login-btn">
-        <button @click="handleLogin">登录</button>
+      <view class="mb-[18px]">
+        <text class="block text-base text-[#333] mb-[8px]">密码</text>
+        <input class="w-full px-md py-md bg-bg-primary rounded-md text-base box-border" placeholder="请输入密码"
+          v-model="password" type="password" />
       </view>
 
-      <view class="login-footer">
-        <text class="link" @click="goToRegister">没有账号？立即注册</text>
+      <view class="mt-[24px]">
+        <button
+          class="w-full bg-gradient-to-br from-primary to-primary-light text-white text-center py-[14px] rounded-full text-lg font-bold border-none active:opacity-90"
+          @click="handleLogin">登录</button>
+      </view>
+
+      <view class="text-center mt-[18px]">
+        <text class="text-primary text-sm" @click="goToRegister">没有账号?立即注册</text>
       </view>
     </view>
   </view>
@@ -69,90 +73,6 @@ const goToRegister = () => {
 }
 </script>
 
-<style lang="scss">
-.login-page {
-  min-height: 100vh;
-  background: linear-gradient(180deg, #5B7FFF 0%, #8CA4FF 50%, #f5f7fa 50%);
-}
-
-.login-header {
-  padding: 120rpx 0 80rpx;
-  text-align: center;
-}
-
-.logo-text {
-  display: block;
-  font-size: 56rpx;
-  font-weight: bold;
-  color: #fff;
-  margin-bottom: 16rpx;
-}
-
-.sub-text {
-  font-size: 28rpx;
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.login-form {
-  background: #fff;
-  margin: 0 40rpx;
-  border-radius: 24rpx;
-  padding: 48rpx;
-  box-shadow: 0 8rpx 40rpx rgba(0, 0, 0, 0.1);
-}
-
-.form-item {
-  margin-bottom: 36rpx;
-}
-
-.label {
-  display: block;
-  font-size: 28rpx;
-  color: #333;
-  margin-bottom: 16rpx;
-}
-
-.input {
-  width: 100%;
-  padding: 24rpx;
-  background: #f5f7fa;
-  border-radius: 16rpx;
-  font-size: 28rpx;
-  box-sizing: border-box;
-}
-
-.login-btn {
-  margin-top: 48rpx;
-
-  button {
-    width: 100%;
-    background: linear-gradient(135deg, #5B7FFF, #8CA4FF);
-    color: #fff;
-    text-align: center;
-    padding: 28rpx 0;
-    border-radius: 48rpx;
-    font-size: 32rpx;
-    font-weight: bold;
-    border: none;
-    outline: none;
-
-    &::after {
-      border: none;
-    }
-
-    &:active {
-      opacity: 0.9;
-    }
-  }
-}
-
-.login-footer {
-  text-align: center;
-  margin-top: 36rpx;
-}
-
-.link {
-  color: #5B7FFF;
-  font-size: 26rpx;
-}
+<style>
+/* 使用 Tailwind CSS */
 </style>

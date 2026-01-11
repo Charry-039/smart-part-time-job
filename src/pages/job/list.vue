@@ -1,59 +1,67 @@
 <template>
-  <view class="job-list-page">
+  <view class="min-h-screen bg-bg-primary pb-[60px]">
     <!-- 搜索和筛选 -->
-    <view class="search-bar">
-      <input class="search-input" placeholder="搜索兼职岗位" v-model="searchText" @confirm="handleSearch" />
-      <view class="filter-btn" @click="showFilter = !showFilter">
+    <view class="flex px-[10px] py-[10px] bg-white gap-[8px]">
+      <input class="flex-1 bg-bg-primary rounded-full px-md py-sm text-base" placeholder="搜索兼职岗位" v-model="searchText"
+        @confirm="handleSearch" />
+      <view class="flex items-center justify-center px-md bg-primary text-white rounded-full text-sm"
+        @click="showFilter = !showFilter">
         <text>筛选</text>
       </view>
     </view>
 
     <!-- 筛选面板 -->
-    <view class="filter-panel" v-if="showFilter">
-      <view class="filter-section">
-        <text class="filter-title">分类</text>
-        <view class="filter-options">
-          <view class="filter-option" :class="{ active: selectedCategory === '' }" @click="selectedCategory = ''">全部
-          </view>
-          <view class="filter-option" v-for="cat in categories" :key="cat.id"
-            :class="{ active: selectedCategory === cat.id }" @click="selectedCategory = cat.id">{{ cat.name }}</view>
+    <view class="bg-white px-[10px] py-[10px] border-t border-[#eee]" v-if="showFilter">
+      <view class="mb-[10px]">
+        <text class="text-sm text-text-secondary mb-[6px] block">分类</text>
+        <view class="flex flex-wrap gap-[8px]">
+          <view class="px-md py-[5px] bg-bg-primary rounded-[10px] text-xs text-text-secondary"
+            :class="{ '!bg-primary !text-white': selectedCategory === '' }" @click="selectedCategory = ''">全部</view>
+          <view class="px-md py-[5px] bg-bg-primary rounded-[10px] text-xs text-text-secondary"
+            v-for="cat in categories" :key="cat.id" :class="{ '!bg-primary !text-white': selectedCategory === cat.id }"
+            @click="selectedCategory = cat.id">{{ cat.name }}</view>
         </view>
       </view>
-      <view class="filter-section">
-        <text class="filter-title">薪资排序</text>
-        <view class="filter-options">
-          <view class="filter-option" :class="{ active: sortBy === 'default' }" @click="sortBy = 'default'">默认</view>
-          <view class="filter-option" :class="{ active: sortBy === 'salary-desc' }" @click="sortBy = 'salary-desc'">薪资最高
-          </view>
-          <view class="filter-option" :class="{ active: sortBy === 'time' }" @click="sortBy = 'time'">最新发布</view>
+      <view class="mb-[10px]">
+        <text class="text-sm text-text-secondary mb-[6px] block">薪资排序</text>
+        <view class="flex flex-wrap gap-[8px]">
+          <view class="px-md py-[5px] bg-bg-primary rounded-[10px] text-xs text-text-secondary"
+            :class="{ '!bg-primary !text-white': sortBy === 'default' }" @click="sortBy = 'default'">默认</view>
+          <view class="px-md py-[5px] bg-bg-primary rounded-[10px] text-xs text-text-secondary"
+            :class="{ '!bg-primary !text-white': sortBy === 'salary-desc' }" @click="sortBy = 'salary-desc'">薪资最高</view>
+          <view class="px-md py-[5px] bg-bg-primary rounded-[10px] text-xs text-text-secondary"
+            :class="{ '!bg-primary !text-white': sortBy === 'time' }" @click="sortBy = 'time'">最新发布</view>
         </view>
       </view>
     </view>
 
     <!-- 兼职列表 -->
-    <view class="list-container">
-      <view class="job-card" v-for="job in filteredJobs" :key="job.id" @click="goToDetail(job.id)">
-        <view class="job-header">
-          <text class="job-title">{{ job.title }}</text>
-          <view class="job-salary">
-            <text class="salary-num">¥{{ job.salary }}</text>
-            <text class="salary-type">{{ getSalaryTypeText(job.salaryType) }}</text>
+    <view class="px-[10px] py-[10px]">
+      <view class="bg-white rounded-md px-md py-md mb-[10px] active:opacity-90" v-for="job in filteredJobs"
+        :key="job.id" @click="goToDetail(job.id)">
+        <view class="flex justify-between items-start mb-[8px]">
+          <text class="text-[15px] font-bold text-text-primary flex-1 mr-[10px]">{{ job.title }}</text>
+          <view class="text-right">
+            <text class="block text-lg font-bold text-secondary">¥{{ job.salary }}</text>
+            <text class="text-[11px] text-text-light">{{ getSalaryTypeText(job.salaryType) }}</text>
           </view>
         </view>
-        <view class="job-meta">
-          <text class="meta-item">📍 {{ job.location }}</text>
-          <text class="meta-item">👁 {{ job.views }}浏览</text>
-          <text class="meta-item">👤 {{ job.applicants }}人报名</text>
+        <view class="flex gap-[10px] mb-[8px]">
+          <text class="text-xs text-text-light">📍 {{ job.location }}</text>
+          <text class="text-xs text-text-light">👁 {{ job.views }}浏览</text>
+          <text class="text-xs text-text-light">👤 {{ job.applicants }}人报名</text>
         </view>
-        <view class="job-tags">
-          <text class="tag">{{ getCategoryName(job.category) }}</text>
-          <text class="tag" v-for="(req, i) in job.requirements.slice(0, 2)" :key="i">{{ req }}</text>
+        <view class="flex flex-wrap gap-[5px]">
+          <text class="inline-block text-[11px] px-[6px] py-[2px] bg-primary/10 text-primary rounded-[3px]">{{
+            getCategoryName(job.category) }}</text>
+          <text class="inline-block text-[11px] px-[6px] py-[2px] bg-primary/10 text-primary rounded-[3px]"
+            v-for="(req, i) in job.requirements.slice(0, 2)" :key="i">{{ req }}</text>
         </view>
       </view>
 
-      <view class="empty-state" v-if="filteredJobs.length === 0">
-        <text class="empty-icon">📭</text>
-        <text class="empty-text">暂无符合条件的兼职</text>
+      <view class="flex flex-col items-center py-[50px]" v-if="filteredJobs.length === 0">
+        <text class="text-[40px] mb-[10px]">📭</text>
+        <text class="text-text-light text-base">暂无符合条件的兼职</text>
       </view>
     </view>
   </view>
@@ -104,7 +112,7 @@ const filteredJobs = computed(() => {
 })
 
 const handleSearch = () => {
-  // 触发搜索（已通过 computed 实时过滤）
+  // 触发搜索(已通过 computed 实时过滤)
 }
 
 const goToDetail = (jobId: string) => {
@@ -123,159 +131,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss">
-.job-list-page {
-  min-height: 100vh;
-  background: #f5f7fa;
-}
-
-.search-bar {
-  display: flex;
-  padding: 20rpx;
-  background: #fff;
-  gap: 16rpx;
-}
-
-.search-input {
-  flex: 1;
-  background: #f5f7fa;
-  border-radius: 40rpx;
-  padding: 16rpx 24rpx;
-  font-size: 28rpx;
-}
-
-.filter-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 24rpx;
-  background: #5B7FFF;
-  color: #fff;
-  border-radius: 40rpx;
-  font-size: 26rpx;
-}
-
-.filter-panel {
-  background: #fff;
-  padding: 20rpx;
-  border-top: 1rpx solid #eee;
-}
-
-.filter-section {
-  margin-bottom: 20rpx;
-}
-
-.filter-title {
-  font-size: 26rpx;
-  color: #666;
-  margin-bottom: 12rpx;
-  display: block;
-}
-
-.filter-options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16rpx;
-}
-
-.filter-option {
-  padding: 10rpx 24rpx;
-  background: #f5f7fa;
-  border-radius: 20rpx;
-  font-size: 24rpx;
-  color: #666;
-
-  &.active {
-    background: #5B7FFF;
-    color: #fff;
-  }
-}
-
-.list-container {
-  padding: 20rpx;
-}
-
-.job-card {
-  background: #fff;
-  border-radius: 16rpx;
-  padding: 24rpx;
-  margin-bottom: 20rpx;
-
-  &:active {
-    opacity: 0.9;
-  }
-}
-
-.job-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 16rpx;
-}
-
-.job-title {
-  font-size: 30rpx;
-  font-weight: bold;
-  color: #1a1a2e;
-  flex: 1;
-  margin-right: 20rpx;
-}
-
-.job-salary {
-  text-align: right;
-}
-
-.salary-num {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #FF6B6B;
-}
-
-.salary-type {
-  font-size: 22rpx;
-  color: #999;
-}
-
-.job-meta {
-  display: flex;
-  gap: 20rpx;
-  margin-bottom: 16rpx;
-}
-
-.meta-item {
-  font-size: 24rpx;
-  color: #999;
-}
-
-.job-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10rpx;
-}
-
-.tag {
-  display: inline-block;
-  font-size: 22rpx;
-  padding: 4rpx 12rpx;
-  background: rgba(91, 127, 255, 0.1);
-  color: #5B7FFF;
-  border-radius: 6rpx;
-}
-
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 100rpx 0;
-}
-
-.empty-icon {
-  font-size: 80rpx;
-  margin-bottom: 20rpx;
-}
-
-.empty-text {
-  color: #999;
-  font-size: 28rpx;
-}
+<style>
+/* 使用 Tailwind CSS */
 </style>
