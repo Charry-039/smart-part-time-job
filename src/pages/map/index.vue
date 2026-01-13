@@ -67,9 +67,9 @@ const markers = computed(() => {
     latitude: job.latitude!,
     longitude: job.longitude!,
     title: job.title,
-    iconPath: '/static/marker.png',
+    iconPath: '/static/logo.png',
     width: 30,
-    height: 40,
+    height: 30,
     callout: {
       content: `${job.title}\n¥${job.salary}`,
       display: 'BYCLICK',

@@ -37,11 +37,18 @@
                     "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
                     "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
                     "<uses-feature android:name=\"android.hardware.camera\"/>",
-                    "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
+                    "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>"
                 ]
             },
             /* ios打包配置 */
-            "ios" : {},
+            "ios" : {
+                "privacyDescription" : {
+                    "NSLocationWhenInUseUsageDescription" : "你的位置信息将用于显示附近的兼职岗位",
+                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "你的位置信息将用于显示附近的兼职岗位"
+                }
+            },
             /* SDK配置 */
             "sdkConfigs" : {}
         }
@@ -54,7 +61,16 @@
         "setting" : {
             "urlCheck" : false
         },
-        "usingComponents" : true
+        "usingComponents" : true,
+        "permission" : {
+            "scope.userLocation" : {
+                "desc" : "你的位置信息将用于显示附近的兼职岗位"
+            }
+        },
+        "requiredPrivateInfos" : [
+            "getLocation",
+            "chooseLocation"
+        ]
     },
     "mp-alipay" : {
         "usingComponents" : true
@@ -68,5 +84,15 @@
     "uniStatistics": {  
         "enable": false
     },
-    "vueVersion" : "3"
+    "vueVersion" : "3",
+    /* H5特有相关 */
+    "h5" : {
+        "sdkConfigs" : {
+            "maps" : {
+                "qqmap" : {
+                    "key" : "UOBBZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77"
+                }
+            }
+        }
+    }
 }
