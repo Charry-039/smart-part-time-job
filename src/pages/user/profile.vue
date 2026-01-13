@@ -68,6 +68,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { getUserInfo, logout, type UserInfo } from '@/utils/storage'
+import { onShow } from '@dcloudio/uni-app'
 
 const user = ref<UserInfo | null>(null)
 
@@ -127,6 +128,11 @@ onMounted(() => {
   user.value = getUserInfo()
   // 监听全局刷新用户信息事件
   uni.$on('refreshUserInfo', refreshUserInfo)
+})
+
+onShow(() => {
+  //刷新用户信息
+  refreshUserInfo()
 })
 
 onUnmounted(() => {
