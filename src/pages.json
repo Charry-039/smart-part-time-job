@@ -50,6 +50,18 @@
       }
     },
     {
+      "path": "pages/user/my-jobs",
+      "style": {
+        "navigationBarTitleText": "我发布的"
+      }
+    },
+    {
+      "path": "pages/user/applications",
+      "style": {
+        "navigationBarTitleText": "我的报名"
+      }
+    },
+    {
       "path": "pages/job/list",
       "style": {
         "navigationBarTitleText": "兼职列表"

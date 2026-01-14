@@ -82,7 +82,8 @@ import { ref, onMounted } from 'vue'
 import {
   getJobById, updateJob, type JobInfo,
   isFavorite, addFavorite, removeFavorite,
-  getApplications, addApplication, isLoggedIn, getUserInfo, generateId
+  getApplications, addApplication, isLoggedIn, getUserInfo, generateId,
+  hasUserApplied
 } from '@/utils/storage'
 import { getCategoryName } from '@/utils/mock-data'
 
@@ -175,8 +176,7 @@ onMounted(() => {
       // 检查是否已报名
       const user = getUserInfo()
       if (user) {
-        const apps = getApplications()
-        hasApplied.value = apps.some(a => a.jobId === jobId && a.userId === user.id)
+        hasApplied.value = hasUserApplied(user.id, jobId)
       }
     }
   }

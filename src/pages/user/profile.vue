@@ -85,11 +85,19 @@ const goToFavorites = () => {
 }
 
 const goToMyJobs = () => {
-  uni.showToast({ title: '功能开发中', icon: 'none' })
+  if (!user.value) {
+    goToLogin()
+    return
+  }
+  uni.navigateTo({ url: '/pages/user/my-jobs' })
 }
 
 const goToApplications = () => {
-  uni.showToast({ title: '功能开发中', icon: 'none' })
+  if (!user.value) {
+    goToLogin()
+    return
+  }
+  uni.navigateTo({ url: '/pages/user/applications' })
 }
 
 const goToMessages = () => {

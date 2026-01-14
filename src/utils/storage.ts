@@ -210,3 +210,21 @@ export function getMessagesByJob(jobId: string): MessageItem[] {
 export function generateId(): string {
   return Date.now().toString(36) + Math.random().toString(36).substr(2, 9)
 }
+
+// 获取用户发布的兼职列表
+export function getUserPublishedJobs(userId: string): JobInfo[] {
+  const allJobs = getJobs()
+  return allJobs.filter(job => job.publisherId === userId)
+}
+
+// 获取用户报名的兼职列表
+export function getUserApplications(userId: string): ApplicationItem[] {
+  const applications = getApplications()
+  return applications.filter(app => app.userId === userId)
+}
+
+// 检查用户是否已报名某个兼职
+export function hasUserApplied(userId: string, jobId: string): boolean {
+  const applications = getApplications()
+  return applications.some(app => app.userId === userId && app.jobId === jobId)
+}
