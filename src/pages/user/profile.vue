@@ -3,8 +3,11 @@
     <view class="bg-gradient-to-br from-primary to-primary-light px-[20px] py-[30px] mb-[10px]">
       <view class="flex items-center gap-md" v-if="user">
         <view
-          class="w-[60px] h-[60px] rounded-full bg-white/30 text-white flex items-center justify-center text-[24px] font-bold">
-          {{ user.nickname?.charAt(0) || '?' }}</view>
+          class="w-[60px] h-[60px] rounded-full bg-white/30 text-white flex items-center justify-center text-[24px] font-bold overflow-hidden active:opacity-80"
+          @click="uploadAvatar">
+          <image v-if="user.avatar" :src="user.avatar" class="w-full h-full" mode="aspectFill" />
+          <text v-else>{{ user.nickname?.charAt(0) || '?' }}</text>
+        </view>
         <view class="flex flex-col gap-[4px]">
           <text class="text-xl font-bold text-white">{{ user.nickname }}</text>
           <text class="text-sm text-white/85">{{ user.phone }}</text>
@@ -12,8 +15,9 @@
       </view>
       <view class="flex items-center gap-md" v-else @click="goToLogin">
         <view
-          class="w-[60px] h-[60px] rounded-full bg-white/20 text-white flex items-center justify-center text-[24px] font-bold">
-          ?</view>
+          class="w-[60px] h-[60px] rounded-full bg-white/20 text-white flex items-center justify-center text-[24px] font-bold overflow-hidden">
+          <text>?</text>
+        </view>
         <view class="flex flex-col gap-[4px]">
           <text class="text-xl font-bold text-white">点击登录</text>
           <text class="text-sm text-white/85">登录后享受更多功能</text>
@@ -67,13 +71,76 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import { getUserInfo, logout, type UserInfo } from '@/utils/storage'
+import { getUserInfo, setUserInfo, logout, type UserInfo } from '@/utils/storage'
 import { onShow } from '@dcloudio/uni-app'
 
 const user = ref<UserInfo | null>(null)
 
 const goToLogin = () => {
   uni.navigateTo({ url: '/pages/user/login' })
+}
+
+const uploadAvatar = () => {
+  uni.chooseImage({
+    count: 1,
+    sizeType: ['compressed'],
+    sourceType: ['album', 'camera'],
+    success: (res) => {
+      const tempFilePath = res.tempFilePaths[0]
+      
+      // H5 环境下使用 FileReader 转换为 base64
+      // #ifdef H5
+      const xhr = new XMLHttpRequest()
+      xhr.open('GET', tempFilePath, true)
+      xhr.responseType = 'blob'
+      xhr.onload = () => {
+        if (xhr.status === 200) {
+          const reader = new FileReader()
+          reader.onload = (e) => {
+            const base64 = e.target?.result as string
+            if (user.value && base64) {
+              const updatedUser = { ...user.value, avatar: base64 }
+              setUserInfo(updatedUser)
+              user.value = updatedUser
+              uni.$emit('refreshUserInfo')
+              uni.showToast({ title: '头像上传成功', icon: 'success' })
+            }
+          }
+          reader.readAsDataURL(xhr.response)
+        }
+      }
+      xhr.send()
+      // #endif
+      
+      // 小程序环境下使用 getFileSystemManager
+      // #ifndef H5
+      try {
+        uni.getFileSystemManager().readFile({
+          filePath: tempFilePath,
+          encoding: 'base64',
+          success: (fileRes: any) => {
+            const base64 = 'data:image/jpeg;base64,' + fileRes.data
+            if (user.value) {
+              const updatedUser = { ...user.value, avatar: base64 }
+              setUserInfo(updatedUser)
+              user.value = updatedUser
+              uni.$emit('refreshUserInfo')
+              uni.showToast({ title: '头像上传成功', icon: 'success' })
+            }
+          },
+          fail: () => {
+            uni.showToast({ title: '上传失败', icon: 'none' })
+          }
+        })
+      } catch (e) {
+        uni.showToast({ title: '上传失败', icon: 'none' })
+      }
+      // #endif
+    },
+    fail: () => {
+      uni.showToast({ title: '取消选择', icon: 'none' })
+    }
+  })
 }
 
 const goToFavorites = () => {
