@@ -107,8 +107,15 @@ const goToPublish = () => {
 }
 
 const editJob = (jobId: string) => {
-  uni.showToast({ title: '编辑功能待开发', icon: 'none' })
-  // TODO: 实现编辑功能，需要在 publish/index.vue 添加编辑模式
+  // 由于 publish 是 tabbar 页面，不能使用 navigateTo，需要通过 localStorage 传递参数
+  uni.setStorageSync('editingJobId', jobId)
+  uni.switchTab({ 
+    url: '/pages/publish/index',
+    success: () => {
+      // 触发编辑模式刷新
+      uni.$emit('startEditJob', jobId)
+    }
+  })
 }
 
 const deleteJobConfirm = (jobId: string) => {

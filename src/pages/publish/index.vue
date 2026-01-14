@@ -74,15 +74,15 @@
       <button
         class="w-full bg-gradient-to-br from-primary to-primary-light text-white text-center py-[14px] rounded-full text-lg font-bold active:opacity-90 active:translate-y-[1px]"
         style="box-shadow: 0 4px 12px rgba(91, 127, 255, 0.3); transition: all 0.3s ease;" @click="handlePublish">
-        发布兼职
+        {{ isEditMode ? '保存修改' : '发布兼职' }}
       </button>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { addJob, isLoggedIn, getUserInfo, generateId } from '@/utils/storage'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { addJob, updateJob, getJobById, isLoggedIn, getUserInfo, generateId } from '@/utils/storage'
 import { JOB_CATEGORIES } from '@/utils/mock-data'
 
 const TABBAR_HEIGHT = 56
@@ -110,6 +110,8 @@ const form = ref({
 })
 
 const requirementsText = ref('')
+const isEditMode = ref(false)
+const editingJobId = ref('')
 
 const selectedCategoryName = computed(() => {
   const cat = categories.value.find(c => c.id === form.value.category)
@@ -130,6 +132,25 @@ const onCategoryChange = (e: any) => {
 
 const onSalaryTypeChange = (e: any) => {
   form.value.salaryType = salaryTypes.value[e.detail.value].value
+}
+
+// 加载待编辑的兼职数据
+const loadJobData = (jobId: string) => {
+  const job = getJobById(jobId)
+  if (job) {
+    form.value = {
+      title: job.title,
+      category: job.category,
+      salary: job.salary,
+      salaryType: job.salaryType,
+      location: job.location,
+      description: job.description,
+      contact: job.contact
+    }
+    requirementsText.value = job.requirements.join('\n')
+    isEditMode.value = true
+    editingJobId.value = jobId
+  }
 }
 
 const handlePublish = () => {
@@ -177,41 +198,97 @@ const handlePublish = () => {
   const user = getUserInfo()
   const requirements = requirementsText.value.split('\n').filter(r => r.trim())
 
-  addJob({
-    id: generateId(),
-    title: form.value.title,
-    category: form.value.category,
-    salary: form.value.salary,
-    salaryType: form.value.salaryType as any,
-    location: form.value.location,
-    description: form.value.description,
-    requirements: requirements,
-    contact: form.value.contact,
-    publisherId: user?.id || '',
-    publisherName: user?.nickname || '匿名用户',
-    createTime: new Date().toISOString(),
-    views: 0,
-    applicants: 0
-  })
+  if (isEditMode.value && editingJobId.value) {
+    // 编辑模式：更新现有兼职
+    updateJob(editingJobId.value, {
+      title: form.value.title,
+      category: form.value.category,
+      salary: form.value.salary,
+      salaryType: form.value.salaryType as any,
+      location: form.value.location,
+      description: form.value.description,
+      requirements: requirements,
+      contact: form.value.contact
+    })
 
-  uni.showToast({ title: '发布成功', icon: 'success' })
+    uni.showToast({ title: '修改成功', icon: 'success' })
 
-  setTimeout(() => {
-    // 重置表单
-    form.value = {
-      title: '',
-      category: '',
-      salary: '',
-      salaryType: 'hour',
-      location: '',
-      description: '',
-      contact: ''
-    }
-    requirementsText.value = ''
-    // 跳转到首页
-    uni.switchTab({ url: '/pages/index/index' })
-  }, 1500)
+    setTimeout(() => {
+      uni.navigateBack()
+    }, 1500)
+  } else {
+    // 新增模式：创建新兼职
+    addJob({
+      id: generateId(),
+      title: form.value.title,
+      category: form.value.category,
+      salary: form.value.salary,
+      salaryType: form.value.salaryType as any,
+      location: form.value.location,
+      description: form.value.description,
+      requirements: requirements,
+      contact: form.value.contact,
+      publisherId: user?.id || '',
+      publisherName: user?.nickname || '匿名用户',
+      createTime: new Date().toISOString(),
+      views: 0,
+      applicants: 0
+    })
+
+    uni.showToast({ title: '发布成功', icon: 'success' })
+
+    setTimeout(() => {
+      // 重置表单
+      form.value = {
+        title: '',
+        category: '',
+        salary: '',
+        salaryType: 'hour',
+        location: '',
+        description: '',
+        contact: ''
+      }
+      requirementsText.value = ''
+      // 跳转到首页
+      uni.switchTab({ url: '/pages/index/index' })
+    }, 1500)
+  }
 }
+
+onMounted(() => {
+  // 检查是否为编辑模式
+  const pages = getCurrentPages()
+  const currentPage = pages[pages.length - 1] as any
+  const urlJobId = currentPage?.options?.id
+  
+  // 优先从 URL 参数读取（非 tabbar 页面跳转）
+  if (urlJobId) {
+    loadJobData(urlJobId)
+    uni.setNavigationBarTitle({ title: '编辑兼职' })
+  } else {
+    // 从 localStorage 读取（tabbar 页面跳转）
+    const storedJobId = uni.getStorageSync('editingJobId')
+    if (storedJobId) {
+      loadJobData(storedJobId)
+      uni.setNavigationBarTitle({ title: '编辑兼职' })
+      // 清除标记
+      uni.removeStorageSync('editingJobId')
+    }
+  }
+  
+  // 监听编辑事件（用于 tabbar 切换时触发）
+  uni.$on('startEditJob', (jobId: string) => {
+    if (jobId) {
+      loadJobData(jobId)
+      uni.setNavigationBarTitle({ title: '编辑兼职' })
+    }
+  })
+})
+
+onUnmounted(() => {
+  // 清理事件监听
+  uni.$off('startEditJob')
+})
 </script>
 
 <style>
