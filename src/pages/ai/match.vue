@@ -72,7 +72,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { getAIRecommendation } from '@/utils/mock-data'
+import { getAIJobRecommendation } from '@/utils/ai-service'
 
 const skills = ref('')
 const availableTime = ref('')
@@ -87,7 +87,7 @@ const sceneImages = ref([
   { icon: '🎨', label: '设计创作', bg: 'linear-gradient(135deg, #f093fb, #f5576c)' }
 ])
 
-const handleSubmit = () => {
+const handleSubmit = async () => {
   if (!skills.value.trim()) {
     uni.showToast({ title: '请输入你的技能', icon: 'none' })
     return
@@ -96,16 +96,25 @@ const handleSubmit = () => {
   isLoading.value = true
   showResult.value = false
 
-  // 模拟AI分析延迟
-  setTimeout(() => {
-    aiResult.value = getAIRecommendation(
+  try {
+    // 调用真实的 AI API
+    const result = await getAIJobRecommendation(
       skills.value,
       availableTime.value || '不限',
       expectedSalary.value || '不限'
     )
-    isLoading.value = false
+    
+    aiResult.value = result
     showResult.value = true
-  }, 2000)
+  } catch (error: any) {
+    uni.showToast({ 
+      title: error.message || 'AI 服务异常，请稍后再试', 
+      icon: 'none',
+      duration: 3000
+    })
+  } finally {
+    isLoading.value = false
+  }
 }
 
 const handleReset = () => {
