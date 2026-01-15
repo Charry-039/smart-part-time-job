@@ -65,7 +65,8 @@ const STORAGE_KEYS = {
   FAVORITES: 'zhiChuang_favorites',
   APPLICATIONS: 'zhiChuang_applications',
   MESSAGES: 'zhiChuang_messages',
-  IS_LOGGED_IN: 'zhiChuang_isLoggedIn'
+  IS_LOGGED_IN: 'zhiChuang_isLoggedIn',
+  DATA_VERSION: 'zhiChuang_dataVersion'
 }
 
 // 通用存储方法
@@ -227,4 +228,13 @@ export function getUserApplications(userId: string): ApplicationItem[] {
 export function hasUserApplied(userId: string, jobId: string): boolean {
   const applications = getApplications()
   return applications.some(app => app.userId === userId && app.jobId === jobId)
+}
+
+// 数据版本管理
+export function getDataVersion(): number {
+  return getStorage<number>(STORAGE_KEYS.DATA_VERSION, 0)
+}
+
+export function setDataVersion(version: number): void {
+  setStorage(STORAGE_KEYS.DATA_VERSION, version)
 }

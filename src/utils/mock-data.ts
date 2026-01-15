@@ -1,5 +1,8 @@
 // 模拟数据初始化
-import { setJobs, getJobs, type JobInfo } from './storage'
+import { setJobs, getJobs, getDataVersion, setDataVersion, type JobInfo } from './storage'
+
+// 当前数据版本号（每次更新模拟数据时需要增加这个版本号）
+const CURRENT_DATA_VERSION = 2
 
 // 兼职分类
 export const JOB_CATEGORIES = [
@@ -158,15 +161,235 @@ const MOCK_JOBS: JobInfo[] = [
     createTime: '2026-01-10T08:00:00',
     views: 445,
     applicants: 28
+  },
+  {
+    id: 'job009',
+    title: '杭州西湖景区讲解员',
+    category: 'service',
+    salary: '150',
+    salaryType: 'day',
+    location: '杭州市西湖风景区',
+    latitude: 30.2591,
+    longitude: 120.1321,
+    description: '周末及节假日在西湖景区为游客提供讲解服务，需熟悉西湖文化历史。',
+    requirements: ['普通话标准', '熟悉杭州历史文化', '周末及节假日有空'],
+    contact: '景区管理处',
+    publisherId: 'user009',
+    publisherName: '西湖旅游服务中心',
+    createTime: '2026-01-11T10:00:00',
+    views: 178,
+    applicants: 9
+  },
+  {
+    id: 'job010',
+    title: 'Python数据分析项目',
+    category: 'tech',
+    salary: '2500',
+    salaryType: 'task',
+    location: '线上远程（宁波）',
+    latitude: 29.8683,
+    longitude: 121.5440,
+    description: '处理销售数据并生成可视化报表，需要使用pandas、matplotlib等库，工期1周。',
+    requirements: ['熟练Python', '掌握数据分析库', '有实际项目经验'],
+    contact: '项目经理陈',
+    publisherId: 'user010',
+    publisherName: '宁波数据科技',
+    createTime: '2026-01-12T09:30:00',
+    views: 142,
+    applicants: 6
+  },
+  {
+    id: 'job011',
+    title: '温州鞋类电商美工',
+    category: 'design',
+    salary: '120',
+    salaryType: 'hour',
+    location: '温州市鹿城区',
+    latitude: 28.0006,
+    longitude: 120.6724,
+    description: '为鞋类电商店铺设计主图、详情页等，需要熟悉淘宝、拼多多等平台设计规范。',
+    requirements: ['熟练PS/AI', '了解电商设计', '能快速出图'],
+    contact: '店铺负责人周',
+    publisherId: 'user011',
+    publisherName: '温州鞋业',
+    createTime: '2026-01-13T14:00:00',
+    views: 98,
+    applicants: 7
+  },
+  {
+    id: 'job012',
+    title: '大学英语四六级辅导',
+    category: 'tutor',
+    salary: '80',
+    salaryType: 'hour',
+    location: '嘉兴学院附近',
+    latitude: 30.7463,
+    longitude: 120.7506,
+    description: '辅导大学生英语四六级考试，包括听力、阅读、写作等模块，每周2-3次。',
+    requirements: ['英语六级550分以上', '有辅导经验优先', '耐心细致'],
+    contact: '学生本人',
+    publisherId: 'user012',
+    publisherName: '嘉兴大学生',
+    createTime: '2026-01-12T16:30:00',
+    views: 156,
+    applicants: 11
+  },
+  {
+    id: 'job013',
+    title: '短视频剪辑制作',
+    category: 'content',
+    salary: '150',
+    salaryType: 'task',
+    location: '线上远程（杭州）',
+    latitude: 30.2741,
+    longitude: 120.1551,
+    description: '为企业号剪辑短视频，每条1-3分钟，需要添加字幕、特效和背景音乐。',
+    requirements: ['熟练剪映/PR', '有创意思维', '按时交付'],
+    contact: '新媒体运营',
+    publisherId: 'user013',
+    publisherName: '杭州传媒公司',
+    createTime: '2026-01-14T11:00:00',
+    views: 223,
+    applicants: 14
+  },
+  {
+    id: 'job014',
+    title: '绍兴黄酒品牌推广',
+    category: 'promotion',
+    salary: '200',
+    salaryType: 'day',
+    location: '绍兴市柯桥区',
+    latitude: 30.0326,
+    longitude: 120.5820,
+    description: '周末在商超进行黄酒品牌推广活动，包括产品介绍、试饮引导等。',
+    requirements: ['形象气质好', '善于沟通', '了解绍兴黄酒文化加分'],
+    contact: 'HR李',
+    publisherId: 'user014',
+    publisherName: '古越龙山',
+    createTime: '2026-01-10T10:30:00',
+    views: 187,
+    applicants: 13
+  },
+  {
+    id: 'job015',
+    title: 'Java后端开发外包',
+    category: 'tech',
+    salary: '4500',
+    salaryType: 'task',
+    location: '线上远程（金华）',
+    latitude: 29.0789,
+    longitude: 119.6478,
+    description: '开发一个企业管理系统后端接口，使用Spring Boot，工期3周。',
+    requirements: ['熟练Spring Boot', '有微服务开发经验', '能独立完成开发'],
+    contact: '技术总监',
+    publisherId: 'user015',
+    publisherName: '金华软件公司',
+    createTime: '2026-01-09T09:00:00',
+    views: 134,
+    applicants: 5
+  },
+  {
+    id: 'job016',
+    title: '台州奶茶店周末兼职',
+    category: 'service',
+    salary: '100',
+    salaryType: 'day',
+    location: '台州市椒江区万达广场',
+    latitude: 28.6569,
+    longitude: 121.4205,
+    description: '周末奶茶店兼职，负责点单、制作饮品、收银等，有培训。',
+    requirements: ['学生优先', '周末双休全勤', '有责任心'],
+    contact: '店长小王',
+    publisherId: 'user016',
+    publisherName: '喜茶台州店',
+    createTime: '2026-01-13T15:00:00',
+    views: 289,
+    applicants: 22
+  },
+  {
+    id: 'job017',
+    title: '小红书文案撰写',
+    category: 'content',
+    salary: '80',
+    salaryType: 'task',
+    location: '线上远程（湖州）',
+    latitude: 30.8703,
+    longitude: 120.0933,
+    description: '撰写美妆护肤类小红书文案，每篇500-800字，需要配图建议。',
+    requirements: ['文笔好', '了解小红书风格', '对美妆感兴趣'],
+    contact: '运营主管',
+    publisherId: 'user017',
+    publisherName: '湖州美妆工作室',
+    createTime: '2026-01-14T13:30:00',
+    views: 167,
+    applicants: 18
+  },
+  {
+    id: 'job018',
+    title: '宁波跨境电商运营助理',
+    category: 'ecommerce',
+    salary: '3500',
+    salaryType: 'month',
+    location: '宁波市江北区',
+    latitude: 29.8869,
+    longitude: 121.5554,
+    description: '协助跨境电商运营，包括产品上架、订单处理、客户沟通等，可兼职可全职。',
+    requirements: ['英语CET-4以上', '熟悉亚马逊等平台', '每周至少20小时'],
+    contact: '运营经理',
+    publisherId: 'user018',
+    publisherName: '宁波跨境贸易公司',
+    createTime: '2026-01-11T14:00:00',
+    views: 245,
+    applicants: 16
+  },
+  {
+    id: 'job019',
+    title: 'CAD机械图纸绘制',
+    category: 'design',
+    salary: '1800',
+    salaryType: 'task',
+    location: '线上远程（温州）',
+    latitude: 28.0145,
+    longitude: 120.6998,
+    description: '绘制机械零件图纸，需要根据实物或草图绘制标准CAD图纸。',
+    requirements: ['熟练AutoCAD', '机械专业背景', '严谨细致'],
+    contact: '工程师张',
+    publisherId: 'user019',
+    publisherName: '温州机械厂',
+    createTime: '2026-01-12T10:00:00',
+    views: 92,
+    applicants: 4
+  },
+  {
+    id: 'job020',
+    title: '杭州钢琴陪练老师',
+    category: 'tutor',
+    salary: '120',
+    salaryType: 'hour',
+    location: '杭州市滨江区',
+    latitude: 30.2098,
+    longitude: 120.2117,
+    description: '陪练小学生钢琴，每周3次，每次1小时，需要有耐心和教学经验。',
+    requirements: ['钢琴十级或音乐专业', '有陪练经验', '有耐心爱心'],
+    contact: '家长陈女士',
+    publisherId: 'user020',
+    publisherName: '滨江家长',
+    createTime: '2026-01-15T09:00:00',
+    views: 113,
+    applicants: 8
   }
 ]
 
 // 初始化模拟数据
 export function initMockData(): void {
   const existingJobs = getJobs()
-  if (existingJobs.length === 0) {
+  const currentVersion = getDataVersion()
+  
+  // 如果没有数据或者数据版本过旧，则重新加载数据
+  if (existingJobs.length === 0 || currentVersion < CURRENT_DATA_VERSION) {
     setJobs(MOCK_JOBS)
-    console.log('Mock data initialized')
+    setDataVersion(CURRENT_DATA_VERSION)
+    console.log(`Mock data initialized/updated to version ${CURRENT_DATA_VERSION}`)
   }
 }
 
