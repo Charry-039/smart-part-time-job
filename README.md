@@ -47,3 +47,13 @@ src/
 `pnpm install`
 ### 启动 H5 开发服务器
 `pnpm dev:h5`
+
+### 配置 Gemini API Key（.env）
+在项目根目录创建或编辑 `.env` 文件，添加以下内容（请替换为你的实际密钥）：
+
+```
+GEMINI_API_KEY=your_gemini_api_key_here
+```
+
+- 本地使用：确保 `.env` 位于项目根目录，修改后重启开发服务器使变量生效：`pnpm dev:h5`。
+- 安全提示：不要将密钥提交到远程仓库。
